@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Machine Timer — Live Counter</title>
+  <meta name="description" content="Real-time machine runtime tracker for M1, M2, M3, M4, PP1, PP2, and PP Old filters">
+  <meta name="theme-color" content="#07071A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- App Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header class="app-header" role="banner">
+    <div class="header-inner">
+      <div class="header-brand">
+        <div class="brand-icon" aria-hidden="true">⚙</div>
+        <div class="brand-text">
+          <span class="brand-title">Machine Timer</span>
+          <span class="brand-sub">Live Runtime Tracker</span>
+        </div>
+      </div>
+      <div class="header-clock" aria-live="polite">
+        <div class="live-dot" aria-label="Live"></div>
+        <span id="live-clock" class="clock-digits">--:--:--</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main App -->
+  <main class="app-main" id="app-root" role="main">
+    <div class="loading-state" id="loading-state" aria-live="polite">
+      <div class="spinner"></div>
+      <p>Connecting to database…</p>
+    </div>
+  </main>
+
+  <!-- Start Timer Modal (Bottom Sheet) -->
+  <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-sheet" id="modal-sheet">
+      <div class="modal-drag-handle" aria-hidden="true"></div>
+      <div class="modal-header">
+        <div class="modal-icon" id="modal-icon" aria-hidden="true">▶</div>
+        <div>
+          <h2 class="modal-title" id="modal-title">Start Timer</h2>
+          <p class="modal-subtitle" id="modal-subtitle">Enter start time</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="modal-datetime">START DATE &amp; TIME</label>
+        <input type="datetime-local" class="form-input" id="modal-datetime" aria-required="true">
+      </div>
+
+      <div class="form-group" id="batch-group" style="display:none">
+        <label class="form-label" for="modal-batch">BATCH NUMBER</label>
+        <input type="text" class="form-input" id="modal-batch"
+               placeholder="e.g. B-2024-001" autocomplete="off" aria-required="true">
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-modal-confirm" id="modal-confirm-btn" onclick="handleModalStart()">
+          ▶ &nbsp;Start Timer
+        </button>
+        <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div class="toast-container" id="toast-container" aria-live="assertive"></div>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>
